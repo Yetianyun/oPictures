@@ -1,4 +1,5 @@
 ./bin
 ./include
 ./lib
-./share/doc/networkx-2.4/examples
+./share
+
