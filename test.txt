@@ -1,0 +1,21 @@
+int main()
+{      Mat img = imread("lena.jpg");
+	for (int i = 0; i<img.rows; i++)
+	{
+		for (int j = 0; j<img.cols; j++)
+		{
+			int mu = img.at<Vec3b>(i, j)[0] + img.at<Vec3b>(i, j)[1] + img.at<Vec3b>(i, j)[2];
+			mu /= 3;
+			int stdev = sqrt(double((img.at<Vec3b>(i, j)[0] - mu)*(img.at<Vec3b>(i, j)[0] - mu) + (img.at<Vec3b>(i, j)[1] - mu)*(img.at<Vec3b>(i, j)[1] - mu) + (img.at<Vec3b>(i, j)[2] - mu)*(img.at<Vec3b>(i, j)[2] - mu)) / 3);
+			for (int k = 0; k<3; k++)
+				img.at<Vec3b>(i, j)[k] = stdev;
+		}
+	}
+	imshow("lena.jpg", img);
+	imwrite("A.jpg", img);
+	waitKey(0);
+	return 0;
+
+————————————————
+版权声明：本文为CSDN博主「soldier123333」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_36340947/article/details/77946224

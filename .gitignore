@@ -4,3 +4,4 @@
 ./share/
 .vscode/settings.json
 ./lib/python3.6/
+config.py
