@@ -5,5 +5,3 @@
 .vscode/settings.json
 ./lib/python3.6/
 config.py
-./history
-./__pycache__
