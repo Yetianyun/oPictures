@@ -9,9 +9,8 @@ from scipy import misc, ndimage
 
 filepath = '/Users/leaf/project/scanWords/testPic/'
 for filename in os.listdir(filepath):
-	print(filename)
+    print(filename)
 	img = cv2.imread('/Users/leaf/project/scanWords/testPic/%s'%filename)
-	# print(img)
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	# edges = cv2.Canny(gray,50,150,apertureSize = 3)
 	#霍夫变换

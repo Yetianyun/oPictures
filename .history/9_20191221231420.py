@@ -9,12 +9,11 @@ from scipy import misc, ndimage
 
 filepath = '/Users/leaf/project/scanWords/testPic/'
 for filename in os.listdir(filepath):
-	print(filename)
-	img = cv2.imread('/Users/leaf/project/scanWords/testPic/%s'%filename)
-	# print(img)
-	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    print(filename)
+	# img = cv2.imread('/Users/leaf/project/scanWords/testPic/%s'%filename)
+	# gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	# edges = cv2.Canny(gray,50,150,apertureSize = 3)
-	#霍夫变换
+	# #霍夫变换
 	# lines = cv2.HoughLines(edges,1,np.pi/180,0)
 	
 	# for rho,theta in lines[0]:
