@@ -10,7 +10,6 @@ import os
 import pymysql
 import configparser
 
-
 config = configparser.ConfigParser()
 config.read("config/config.ini", encoding="utf-8")
 baiduAppId = config.get("BaiduOCR", "appId")
@@ -39,6 +38,21 @@ def img_to_str(image_path):
 # if __name__ == '__main__':
 #source_path 源文件目录
 def read_source(source_path):
+    num_dict = {"一": "1", "二": "2", "三": "3", "四": "4", "五": "5", "六": "6", "七": "7", "八": "8", "九": "9", "十": ""}
+    config = configparser.ConfigParser()
+    config.read('config/config.ini')
+    section = 'mysql'
+    conf = {
+        'host': config.get(section, 'host'),
+        'port': config.getint(section, 'port'),
+        'user': config.get(section, 'user'),
+        'passwd': config.get(section, 'password'),
+        'db': config.get(section, 'database'),
+        'charset': config.get(section, 'charset')
+    }
+    conn = pymysql.connect(**conf)
+    sql_insert = """insert into scan_file_info(pic_name, main_type, sub_type) values (%s,%s,%s)"""
+
     for scan_file in os.listdir(source_path):
         source_file_path = 'testPic/'+scan_file
         img = cv2.imread(source_file_path)
@@ -66,14 +80,19 @@ def read_source(source_path):
         # print(api_result)
 
         pattern1 = "([一二三四五六七八九十])"
-        m1 = re.search(pattern1,s)
-        dataNO1 = m1.group() #主数据
-        print ( dataNO1 )
+        m1 = re.search(pattern1, s)
+        main_type = num_dict[m1.group()]  # 主数据
 
         pattern2 = "([123456789])"
         m2 = re.search(pattern2,s) #次数据
-        dataNO2 = m2.group()
-        print ( dataNO2 )
+        sub_type = m2.group()
+
+        #在这里把"图片名称"及"图片序号"写进去。
+        cursor = conn.cursor()
+        cursor.execute(sql_insert, (scan_file, main_type, sub_type))
+        #
+    cursor.close()
+    conn.commit()
 
 if __name__ == '__main__':
     source_path = "testPic/"
