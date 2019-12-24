@@ -8,3 +8,4 @@ config.py
 ./history
 ./__pycache__
 config.ini
+.idea/workspace.xml

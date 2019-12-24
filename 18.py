@@ -1,10 +1,9 @@
-#从图片上扣一块下来。并且分析哪个图是哪张纸。
 #   _*_ coding:utf-8 _*_
+#从图片上扣一块下来。并且分析哪个图是哪张纸。
 __author__ = 'admin'
 from PIL import Image, ImageDraw, ImageFont
 import cv2
 from aip import AipOcr
-import configparser
 import re
 import configparser
 
@@ -29,16 +28,17 @@ newPic = "testPic/pic_name.jpg"
 region.save(newPic, quality=95)
 
 config = configparser.ConfigParser()
-config.read("./config.ini", encoding="utf-8")
-baiduAppId = config.get("baiduOCR", "appId")
-baiduApiKey = config.get("baiduOCR", "apiKey")
-baiduSecretKey = config.get("baiduOCR", "secretKey")
+config.read("config/config.ini", encoding="utf-8")
+baiduAppId = config.get("BaiduOCR", "appId")
+baiduApiKey = config.get("BaiduOCR", "apiKey")
+baiduSecretKey = config.get("BaiduOCR", "secretKey")
 
 config = {
     'appId': baiduAppId,
     'apiKey': baiduApiKey,
     'secretKey': baiduSecretKey
 }
+
 
 client = AipOcr(**config)
 
@@ -60,10 +60,10 @@ if __name__ == '__main__':
 
     pattern1 = "([一二三四五六七八九十])"
     m1 = re.search(pattern1,s)
-    t1 = m1.group()
-    print ( t1 )
+    dataNO1 = m1.group() #主数据
+    print ( dataNO1 )
 
     pattern2 = "([123456789])"
-    m2 = re.search(pattern2,s)
-    t2 = m2.group()
-    print ( t2 )
+    m2 = re.search(pattern2,s) #次数据
+    dataNO2 = m2.group()
+    print ( dataNO2 )
