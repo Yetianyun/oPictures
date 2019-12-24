@@ -1,5 +1,5 @@
 #   _*_ coding:utf-8 _*_
-#从图片上扣一块下来。并且分析哪个图是哪张纸。
+#将数据存入数据库，本代码是处理"题目"的
 __author__ = 'admin'
 from PIL import Image, ImageDraw, ImageFont
 import cv2
@@ -90,7 +90,7 @@ def read_source(source_path):
         #在这里把"图片名称"及"图片序号"写进去。
         cursor = conn.cursor()
         cursor.execute(sql_insert, (scan_file, main_type, sub_type))
-        #
+
     cursor.close()
     conn.commit()
 
