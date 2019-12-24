@@ -6,6 +6,7 @@ import cv2
 from aip import AipOcr
 import configparser
 import re
+import configparser
 
 file_path = 'testPic/2019-12-20-0101.jpg'
 img = cv2.imread(file_path)
@@ -27,19 +28,24 @@ region = im.crop(box)
 newPic = "testPic/pic_name.jpg"
 region.save(newPic, quality=95)
 
-#百度api，用来OCR
+config = configparser.ConfigParser()
+config.read("./config.ini", encoding="utf-8")
+baiduAppId = config.get("baiduOCR", "appId")
+baiduApiKey = config.get("baiduOCR", "apiKey")
+baiduSecretKey = config.get("baiduOCR", "secretKey")
+
 config = {
-    'appId': '',
-    'apiKey': '',
-    'secretKey': ''
+    'appId': baiduAppId,
+    'apiKey': baiduApiKey,
+    'secretKey': baiduSecretKey
 }
- 
+
 client = AipOcr(**config)
- 
+
 def get_file_content(file):
     with open(file, 'rb') as fp:
         return fp.read()
- 
+
 def img_to_str(image_path):
     image = get_file_content(image_path)
     # 通用文字识别（可以根据需求进行更改）
@@ -48,12 +54,16 @@ def img_to_str(image_path):
 
 if __name__ == '__main__':
     api_result = img_to_str("testPic/pic_name.jpg")
-    print(api_result)
     words_result = (i['words'] for i in api_result['words_result'])  # 文本内容
-    result = '\n'.join(words_result)  #
-    print(result)
+    s = '\n'.join(words_result)  #
+    # print(api_result)
 
-    # # # print(text)
-    # rs = re.search(r'([一二三四五六七八九十]',"",result)
-    # print(rs)
-    # # print(text["words_result"]["words"])
+    pattern1 = "([一二三四五六七八九十])"
+    m1 = re.search(pattern1,s)
+    t1 = m1.group()
+    print ( t1 )
+
+    pattern2 = "([123456789])"
+    m2 = re.search(pattern2,s)
+    t2 = m2.group()
+    print ( t2 )

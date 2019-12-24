@@ -1,15 +1,23 @@
-#获得这是第几张纸
-#!/usr/bin/python3
-import re
+#使用pymysql连接mysql数据库
+import  pymysql
 
-s = "领航卷·全国卷·政治试题三第4页(共8页)"
-pattern1 = "([一二三四五六七八九十])"
-m1 = re.search(pattern1,s)
-t1 = m1.group()
-print ( t1 )
 
-pattern2 = "([123456789])"
-m2 = re.search(pattern2,s)
-t2 = m2.group()
-print ( t2 )
+def pyconn():
+    # 打开数据库连接
+    conn = pymysql.connect(host="localhost", user="root", password="Woyaojiayou123!",
+                           database="scanWords", port=3306)
+    # 使用 cursor() 方法创建一个游标对象 cursor
+    cursor = conn.cursor()
+    # 使用 execute()  方法执行 SQL 查询
+    cursor.execute("select version()")
+    # 使用 fetchone() 方法获取单条数据.
+    data = cursor.fetchone()
+    # 输出查询的数据：
+    print("Database Version: %s" % data)
+    # 关闭数据库连接
+    conn.close()
+
+
+if __name__ == "__main__":
+    pyconn()
 
