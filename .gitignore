@@ -5,7 +5,7 @@
 .vscode/settings.json
 ./lib/python3.6/
 config.py
-./history
+.history
 ./__pycache__
 config.ini
 .idea/workspace.xml

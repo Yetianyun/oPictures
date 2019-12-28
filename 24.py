@@ -1,10 +1,10 @@
 #进一步切分图片
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import os,cv2
 import numpy as t
-# import numpy as np
 
 def splitPic(source_path):
+    picNo = 0
     for scan_file in os.listdir(source_path):
         source_file_path = 'testPic/' + scan_file
         img = Image.open(source_file_path)
@@ -44,8 +44,9 @@ def splitPic(source_path):
                 maxColValue = col
 
         img = Image.open(source_file_path)
-        img.crop((0, 0, maxColValue - 18, 3496)).save('target_pic/target_s_a_1.jpg')
-        img.crop((maxColValue + 18, 0, 2472, 3496)).save('target_pic/target_s_a_2.jpg')
+        img.crop((0, 0, maxColValue - 18, 3496)).save('target_pic/target_s_a_'+str(picNo)+'.jpg')
+        img.crop((maxColValue + 18, 0, 2472, 3496)).save('target_pic/target_s_a_'+str(picNo+1)+'.jpg')
+        picNo += 2
 
 if __name__ == '__main__':
     source_path = "testPic/"

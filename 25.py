@@ -1,27 +1,54 @@
-# -*- coding: utf-8 -*-
-#检测图片中的直线
-import cv2
+#对切分图片进行调整
+from PIL import Image
+import os,cv2
+import numpy as t
 
-import numpy as np
+def splitPic(source_path):
+    picNo = 0
+    for scan_file in os.listdir(source_path):
+        source_file_path = 'testPic/' + scan_file
+        img = Image.open(source_file_path)
+        info = img.size
+        width = info[0]
+        height = info[1]
+        getWidth = t.zeros(width)
+        for k in range(0,width):
+            getWidth[k] = 0
+        getWidth[0] += 1
+        img = cv2.imread(source_file_path)
+        # 查找页面中的分割线
+        startHeight = int(height * 0.2)
+        endHeight = int(height * 0.8) - 1
+        startWidth = int(width * 0.35)
+        endWidth = int(width * 0.7) - 1
+        step = 3
+        for row in range(startHeight,endHeight,step):  # 图片的高
+            for col in range(startWidth,endWidth,step):  # 图片的宽
+                channel1 = img[row][col][0]
+                channel2 = img[row][col][1]
+                channel3 = img[row][col][2]
+                if ( ( channel1 >= 70 and channel1 <= 80 ) and
+                     ( channel2 >= 70 and channel2 <= 80 ) and
+                     ( channel3 >= 70 and channel3 <= 80 ) ):
+                    m = 1 #表示可能是黑色
+                else:
+                    m = 0
+                getWidth[col] += m
+                # print(row, col, channel3)
 
-import matplotlib.pyplot as plt
-import os
+        #求最大的col
+        maxCol = 0
+        for col in range(startWidth, endWidth, step):  # 图片的宽
+            if ( getWidth[col] > maxCol ):
+                maxCol = getWidth[col]
+                maxColValue = col
 
-source_path = "testPic"
-for scan_file in os.listdir(source_path):
-    print(scan_file)
-    source_file_path = 'testPic/' + scan_file
-    img = cv2.imread(source_file_path)  # 需要图片的绝对路径
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    edges = cv2.Canny(gray, 50, 200)
-    ls = cv2.HoughLines(edges, 1, np.pi / 180, 100)
-    l1 = ls[:, 0, :]
-    for r, t in l1[:]:
-        a = np.cos(t)
-        b = np.sin(t)
-        x0 = a * r
-        y0 = b * r
-        x1 = int(x0 + 1000 * (-b))
-        y1 = int(y0 + 1000 * (a))
-        x2 = int(x0 - 1000 * (-b))
-        y2 = int(y0 - 1000 * (a))
+        img = Image.open(source_file_path)
+        img.crop((0, 0, maxColValue - 18, 3496)).save('target_pic/target_s_a_'+str(picNo)+'.jpg')
+        img.crop((maxColValue + 18, 0, 2472, 3496)).save('target_pic/target_s_a_'+str(picNo+1)+'.jpg')
+        picNo += 2
+
+if __name__ == '__main__':
+    source_path = "testPic/"
+    splitPic(source_path)
+
