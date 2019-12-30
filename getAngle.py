@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
+#encoding:utf-8
 import numpy as np
 import cv2 #或者用import cv2（由于库的安装方式不同）
 import math
+import splitPic
 
 def access_pixels1(img):
     """遍历图像每个像素的每个通道"""
@@ -28,7 +29,7 @@ def access_pixels1(img):
     oldPixelColor = 187188178
 
     # for row in range(10,height,5000):    #遍历每一行
-    row = 15
+    row = 30
     for col in range(width,0,-10): #遍历每一列
         pixelColor = 0 ; # 计算RGB的值
         for channel in range(channels):    #遍历每个通道（三个通道分别是BGR）
@@ -115,16 +116,17 @@ def create_img_1():
     img[:,:,0] = np.ones([400,400])*127
     #切片取出所有行所有列的第一个元素（索引为0），灰度元素，并赋值为127
     cv2.imshow("created_img1",img)
- 
+
+
 def get_angle(source_file):
     src = cv2.imread(source_file)  #读取图像
-    t1 = cv2.getTickCount()    #记录下起始时刻
+    # t1 = cv2.getTickCount()    #记录下起始时刻
     y1,x1 = access_pixels1(src)         #访问图像的每个元素并处理
     y2,x2 = access_pixels2(src)         #访问图像的每个元素并处理
     angle = math.atan( abs(y2-y1)/abs(x2-x1)) ;
     return angle
 
-if __name__ == '__main__':
-    source_path = "testPic/2019-12-20-0101.jpg"
-    pic_angle = get_angle(source_path)
-    print(pic_angle)
+# if __name__ == '__main__':
+#     source_path = "testPic/2019-12-20-0101.jpg"
+#     pic_angle = get_angle(source_path)
+#     print(pic_angle)

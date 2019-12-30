@@ -1,16 +1,27 @@
 #对切分图片进行调整
+#encoding:utf-8
 from PIL import Image
 import os,cv2
-import getAngle
 import numpy as t
+import getAngle
+from PIL import Image
+from numpy import *
+#如果上面有"其他信息"应该如何区分
+
+def rotateAngle(angle,source_file):
+    # 正确的进行旋转角度
+    pil_im = Image.open(source_file)
+    source_route = angle * 360
+    pil_im = pil_im.rotate(source_route)
+    new_file_path = 'target_pic/target_path_2019-12-20-0101.jpg'
+    pil_im.save(new_file_path)
 
 def splitPic(source_path):
     picNo = 0
     for scan_file in os.listdir(source_path):
         source_file_path = 'testPic/' + scan_file
-        angle = get_angle(source_path)
-        print(angle)
-
+        angle = getAngle.get_angle(source_file_path)
+        rotateAngle(angle,source_file_path)
         img = Image.open(source_file_path)
         #遇到需要图的，要先转一下。
 
@@ -57,4 +68,3 @@ def splitPic(source_path):
 if __name__ == '__main__':
     source_path = "testPic/"
     splitPic(source_path)
-

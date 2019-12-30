@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-import os
-from cv2 import cv2 #或者用import cv2（由于库的安装方式不同）
+import cv2 #或者用import cv2（由于库的安装方式不同）
 import math
 
 def access_pixels1(img):
     """遍历图像每个像素的每个通道"""
-    print(img.shape)              #打印图像的高，宽，通道数（返回一个3元素的tuple）
+    # print(img.shape)              #打印图像的高，宽，通道数（返回一个3元素的tuple）
 
     height = img.shape[0]        #将tuple中的元素取出，赋值给height，width，channels
     width = img.shape[1]
     channels = img.shape[2]
 
     height -= 5
-    # width = round(width / 10)
-    # height = 10 # round(height / 10 )
-    #(3496, 2472, 3)
-    # height = 10
     width = int( width / 100 ) * 100 # 2400 #int(width)
-    print("height:%s,width:%s,channels:%s" % (height,width,channels))
+    # print("height:%s,width:%s,channels:%s" % (height,width,channels))
     oldPixelColor = 0
 
     pixelColor = 0
@@ -58,7 +53,7 @@ def access_pixels1(img):
 
 def access_pixels2(img):
     """遍历图像每个像素的每个通道"""
-    print(img.shape)              #打印图像的高，宽，通道数（返回一个3元素的tuple）
+    # print(img.shape)              #打印图像的高，宽，通道数（返回一个3元素的tuple）
 
     height = img.shape[0]        #将tuple中的元素取出，赋值给height，width，channels
     width = img.shape[1]
@@ -66,7 +61,7 @@ def access_pixels2(img):
 
     height -= 5
     width = int( width / 100 ) * 100 # 2400 #int(width)
-    print("height:%s,width:%s,channels:%s" % (height,width,channels))
+    # print("height:%s,width:%s,channels:%s" % (height,width,channels))
     oldPixelColor = 0
 
     pixelColor = 0
@@ -121,22 +116,15 @@ def create_img_1():
     #切片取出所有行所有列的第一个元素（索引为0），灰度元素，并赋值为127
     cv2.imshow("created_img1",img)
  
- 
- 
-src = cv2.imread("testPic/2019-12-20-0101.jpg")  #读取图像
-t1 = cv2.getTickCount()    #记录下起始时刻
-y1,x1 = access_pixels1(src)         #访问图像的每个元素并处理
-y2,x2 = access_pixels2(src)         #访问图像的每个元素并处理
-print(x1,y1)
-print(x2,y2)
-angle = math.atan( abs(y2-y1)/abs(x2-x1)) ; 
-print(angle) 
-# create_img()               #通过numpy创建三通道彩色图
-# create_img_1()            #通过numpy创建单通道灰度图
-# t2 = cv2.getTickCount()   #记录下结束时刻
-# time = ((t2-t1)*1000)/cv2.getTickFrequency() #计算中间语句执行所耗时间，单位为ms
-# print("所耗时间：%s" % time)
- 
- 
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+def get_angle(source_file):
+    src = cv2.imread(source_file)  #读取图像
+    t1 = cv2.getTickCount()    #记录下起始时刻
+    y1,x1 = access_pixels1(src)         #访问图像的每个元素并处理
+    y2,x2 = access_pixels2(src)         #访问图像的每个元素并处理
+    angle = math.atan( abs(y2-y1)/abs(x2-x1)) ;
+    return angle
+
+if __name__ == '__main__':
+    source_path = "testPic/2019-12-20-0101.jpg"
+    pic_angle = get_angle(source_path)
+    print(pic_angle)

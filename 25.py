@@ -1,13 +1,19 @@
 #对切分图片进行调整
 from PIL import Image
 import os,cv2
+import getAngle #abc
 import numpy as t
 
 def splitPic(source_path):
     picNo = 0
     for scan_file in os.listdir(source_path):
         source_file_path = 'testPic/' + scan_file
+        angle = get_angle(source_file_path)
+        print(angle)
+
         img = Image.open(source_file_path)
+        #遇到需要图的，要先转一下。
+
         info = img.size
         width = info[0]
         height = info[1]
@@ -49,6 +55,14 @@ def splitPic(source_path):
         picNo += 2
 
 if __name__ == '__main__':
-    source_path = "testPic/"
-    splitPic(source_path)
+    #引用测试
+    source_file_path = "testPic/2019-12-20-0101.jpg"
+    angle = getAngle.get_angle(source_file_path)
+    print(angle)
+    # source_path = "testPic/"
+    #
+    # print(angle)
+    #
+    #
+    # splitPic(source_path)
 
